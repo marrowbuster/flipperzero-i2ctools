@@ -71,6 +71,12 @@ int32_t i2ctools_app(void* p) {
 
     while(furi_message_queue_get(event_queue, &event, FuriWaitForever) == FuriStatusOk) {
         // Back
+        if(i2ctools->held) {
+            if(event.key == InputKeyOk && event.type == InputTypeRelease) {
+                i2ctools->held = false;
+            }
+            continue;
+        }
         if(event.key == InputKeyBack && event.type == InputTypeRelease) {
             if(i2ctools->main_view->current_view == MAIN_VIEW) {
                 break;
@@ -166,6 +172,16 @@ int32_t i2ctools_app(void* p) {
                 }
             }
 
+        }
+        // OK
+        // this is some REALLY fucking ugly code holy shit
+        else if(event.key == InputKeyOk && event.type == InputTypeLong) {
+            if(i2ctools->main_view->current_view == SEND_VIEW) {
+                i2ctools->sender->rw ^= true;
+                i2ctools->held = true;
+                view_port_update(i2ctools->view_port);
+                continue;
+            }
         } else if(event.key == InputKeyOk && event.type == InputTypeRelease) {
             if(i2ctools->main_view->current_view == MAIN_VIEW) {
                 i2ctools->main_view->current_view = i2ctools->main_view->menu_index;

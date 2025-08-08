@@ -18,6 +18,8 @@ typedef struct {
     ViewPort* view_port;
     i2cMainView* main_view;
 
+    bool held;
+
     i2cScanner* scanner;
     i2cSniffer* sniffer;
     i2cSender* sender;

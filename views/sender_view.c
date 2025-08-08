@@ -40,8 +40,10 @@ void draw_sender_view(Canvas* canvas, i2cSender* i2c_sender) {
     if(i2c_sender->must_send) {
         i2c_send(i2c_sender);
     }
+    // read or write?
+    canvas_draw_str_aligned(canvas, 3, 25, AlignLeft, AlignTop, i2c_sender->rw ? "Write" : "Read");
     // Result
-    canvas_draw_str_aligned(canvas, 3, 25, AlignLeft, AlignTop, "Result: ");
+    canvas_draw_str_aligned(canvas, 3, 35, AlignLeft, AlignTop, "Result: ");
     if(i2c_sender->sended) {
         uint8_t row = 1;
         uint8_t column = 1;
